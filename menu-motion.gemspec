@@ -2,7 +2,7 @@
 require File.expand_path('../lib/menu_motion/version', __FILE__)
 
 Gem::Specification.new do |spec|
-  spec.name          = "menu_motion"
+  spec.name          = "menu-motion"
   spec.version       = MenuMotion::VERSION
   spec.authors       = ["Brian Pattison"]
   spec.email         = ["brian@brianpattison.com"]
