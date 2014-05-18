@@ -1,0 +1,5 @@
+includeFiles = "{$includeFiles,.gitignore,.travis.yml}"
+excludeInFolderSearch = "{$excludeInFolderSearch,build,vendor}"
+
+softTabs = true
+tabSize = 2
