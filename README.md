@@ -179,6 +179,11 @@ menu.update(:submenu_item1, {
 })
 ```
 
+## TODO
+
+- Menu Item Icons
+- Keyboard Shortcuts
+
 ## Contributing
 
 1. Fork it
