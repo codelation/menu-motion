@@ -1,5 +1,7 @@
 # MenuMotion
 
+[![Build Status](https://travis-ci.org/codelation/menu-motion.svg)](https://travis-ci.org/codelation/menu-motion)
+
 MenuMotion is a RubyMotion wrapper inspired by Formotion for creating OS X status bar menus with a syntax that should feel familiar if you've used Formotion.
 
 ## Installation
