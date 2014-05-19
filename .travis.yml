@@ -1,8 +1,12 @@
 language: objective-c
 before_install:
     - (ruby --version)
-    - sudo -u travis mkdir -p ~/Library/RubyMotion/build
+    - sudo chown -R travis ~/Library/RubyMotion
+    - mkdir -p ~/Library/RubyMotion/build
     - sudo motion update
-script: ./travis.sh
+script:
+    - bundle install
+    - bundle exec rake clean
+    - bundle exec rake spec
 notifications:
   email: false
