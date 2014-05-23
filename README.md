@@ -142,7 +142,7 @@ end
 
 ### Keyboard shortcuts
 
-Assign keyboard shortcuts to menu items. Takes a string of the form '(_modifier_+)*_character' where _modifier is any of: shift, alt, alternate, command, cmd, control, ctrl, ctl.
+Assign keyboard shortcuts to menu items. Takes a string of the form '(_modifier_+)*character' where _modifier_ is any of: shift, alt, alternate, command, cmd, control, ctrl, ctl.
 
 ```ruby
 menu = MenuMotion::Menu.new({
@@ -164,6 +164,7 @@ menu = MenuMotion::Menu.new({
     }]
   }]
 })
+```
 
 ### Menu Item validation
 
