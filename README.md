@@ -140,37 +140,84 @@ def action_with_sender(sender)
 end
 ```
 
-### Updating Menu Items
+### Keyboard shortcuts
 
-Assign keys to menu items that will need to be updated.
+Assign keyboard shortcuts to menu items. Takes a string of the form '(_modifier_+)*_character' where _modifier is any of: shift, alt, alternate, command, cmd, control, ctrl, ctl.
 
 ```ruby
 menu = MenuMotion::Menu.new({
   rows: [{
     title: "Menu item",
-    key: :main_item
+    tag: :main_item
     rows: [{
       title: "Submenu item 1",
-      key: :submenu_item1,
+      tag: :submenu_item1,
+      target: self,
+      action: "do_something:",
+      shortcut: "cmd+1"
+    }, {
+      title: "Submenu item 2",
+      tag: :submenu_item2,
+      target: self,
+      action: "do_something:"
+      shortcut: "shift+cmd+2"
+    }]
+  }]
+})
+
+### Menu Item validation
+
+MenuMotion implements the [NSMenuValidation](https://developer.apple.com/library/mac/documentation/cocoa/reference/applicationkit/Protocols/NSMenuValidation_Protocol/Reference/Reference.html) protocol. Pass a method name or a proc to a menu item:
+
+```ruby
+menu = MenuMotion::Menu.new({
+  rows: [{
+    title: "Menu item",
+    tag: :main_item
+    rows: [{
+      title: "Submenu item 1",
+      tag: :submenu_item1,
+      target: self,
+      action: "do_something:",
+      validate: ->(menu_item) {
+        true
+      }
+    }]
+  }]
+})
+```
+
+### Reconfiguring Menu Items
+
+Assign tags to menu items that will need to be reconfigured.
+
+```ruby
+menu = MenuMotion::Menu.new({
+  rows: [{
+    title: "Menu item",
+    tag: :main_item
+    rows: [{
+      title: "Submenu item 1",
+      tag: :submenu_item1,
       target: self,
       action: "do_something:"
     }, {
       title: "Submenu item 2",
-      key: :submenu_item2,
+      tag: :submenu_item2,
       target: self,
       action: "do_something:"
     }]
   }]
 })
 
-# Let's update the first item's title:
-menu.update(:main_item, {
+# Let's reconfigure the first item's title:
+menu.reconfigure(:main_item, {
   title: "Hello World"
 })
 
 # And give the first submenu item a submenu.
 # The target and action will not be used if a submenu is defined.
-menu.update(:submenu_item1, {
+menu.reconfigure(:submenu_item1, {
   rows: [{
     title: "Click me",
     target: self,
@@ -182,7 +229,6 @@ menu.update(:submenu_item1, {
 ## TODO
 
 - Menu Item Icons
-- Keyboard Shortcuts
 
 ## Contributing
 

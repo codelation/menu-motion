@@ -39,12 +39,12 @@ module MenuMotion
           menu_item.tag = tag
         end
 
-        if (ke=row[:key])
-          parts = ke.split('-')
+        if (ke=row[:shortcut])
+          parts = ke.split('+')
           k = parts.pop
 
-          raise MMException.new("Missing key char for menu item #{menu_item.title}: #{ke}") unless (k)
-          raise MMException.new("Unknown key char for menu item #{menu_item.title}: #{ke}") unless (k.length == 1)
+          raise MMException.new("Missing key char for menu item #{menu_item.title} shortcut: #{ke}") unless (k)
+          raise MMException.new("Unknown key char for menu item #{menu_item.title} shortcut: #{ke}") unless (k.length == 1)
 
           mod_mask = parts.inject(0) do |mask,mod|
             case mod
@@ -57,7 +57,7 @@ module MenuMotion
             when 'control', 'ctl', 'ctrl'
               mask |= NSControlKeyMask
             else
-              raise MMException.new("Unknown key modifier for menu item #{menu_item.title}: #{mod.to_s}. Want any of shift, alt, alternate, command, cmd, control, ctrl, ctl")
+              raise MMException.new("Unknown key modifier for menu item #{menu_item.title} shortcut: #{mod.to_s}. Want any of: shift, alt, alternate, command, cmd, control, ctrl, ctl")
             end
 
             mask
@@ -110,7 +110,7 @@ module MenuMotion
       @menu_items[tag.to_sym]
     end
 
-    def reconfig(tag, params)
+    def reconfigure(tag, params)
       menu_item = self.item_with_tag(tag)
 
       [
@@ -119,7 +119,7 @@ module MenuMotion
        :action,
        :validate,
        :tag,
-       :key,
+       :shortcut,
        :enabled
       ].each do |f|
         menu_item.send("#{f}=",params[f]) if (params.has_key?(f))

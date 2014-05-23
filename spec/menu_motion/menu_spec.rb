@@ -135,71 +135,71 @@ describe "MenuMotion::Menu" do
     menu_item.submenu.itemAtIndex(3).title.should.equal "Section 2 Row 1"
   end
 
-  it "#item_with_key returns menu items by the lookup key" do
+  it "#item_with_tag returns menu items by the lookup tag" do
     menu = MenuMotion::Menu.new({
       rows: [{
         title: "Menu item",
-        key: :main_item,
+        tag: :main_item,
         sections: [{
           rows: [{
             title: "Section 1 Row 1",
-            key: :section1_row1
+            tag: :section1_row1
           }, {
             title: "Section 1 Row 2",
-            key: :section1_row2
+            tag: :section1_row2
           }]
         }, {
           rows: [{
             title: "Section 2 Row 1",
-            key: :section2_row1
+            tag: :section2_row1
           }]
         }]
       }]
     })
 
-    item = menu.item_with_key(:main_item)
+    item = menu.item_with_tag(:main_item)
     item.title.should.equal "Menu item"
 
-    item = menu.item_with_key(:section1_row1)
+    item = menu.item_with_tag(:section1_row1)
     item.title.should.equal "Section 1 Row 1"
 
-    item = menu.item_with_key(:section1_row2)
+    item = menu.item_with_tag(:section1_row2)
     item.title.should.equal "Section 1 Row 2"
 
-    item = menu.item_with_key(:section2_row1)
+    item = menu.item_with_tag(:section2_row1)
     item.title.should.equal "Section 2 Row 1"
   end
 
-  it "Updates the title of the menu item with the given key" do
+  it "Reconfigures the title of the menu item with the given tag" do
     menu = MenuMotion::Menu.new({
       rows: [{
         title: "Menu item",
-        key: :main_item,
+        tag: :main_item,
         sections: [{
           rows: [{
             title: "Section 1 Row 1",
-            key: :section1_row1
+            tag: :section1_row1
           }, {
             title: "Section 1 Row 2",
-            key: :section1_row2
+            tag: :section1_row2
           }]
         }, {
           rows: [{
             title: "Section 2 Row 1",
-            key: :section2_row1
+            tag: :section2_row1
           }]
         }]
       }]
     })
 
-    menu.update(:section1_row2, {
+    menu.reconfigure(:section1_row2, {
       title: "New Title"
     })
 
     menu.itemAtIndex(0).submenu.itemAtIndex(1).title.should.equal "New Title"
   end
 
-  it "Updates the target and action of the menu item with the given key" do
+  it "Reconfigures the target and action of the menu item with the given tag" do
     class Dummy
       attr_accessor :action_completed
 
@@ -213,31 +213,92 @@ describe "MenuMotion::Menu" do
     menu = MenuMotion::Menu.new({
       rows: [{
         title: "Menu item",
-        key: :main_item,
+        tag: :main_item,
         sections: [{
           rows: [{
             title: "Section 1 Row 1",
-            key: :section1_row1
+            tag: :section1_row1
           }, {
             title: "Section 1 Row 2",
-            key: :section1_row2
+            tag: :section1_row2
           }]
         }, {
           rows: [{
             title: "Section 2 Row 1",
-            key: :section2_row1
+            tag: :section2_row1
           }]
         }]
       }]
     })
 
-    menu.update(:main_item, {
+    menu.reconfigure(:main_item, {
       target: dummy,
       action: "dummy_action"
     })
 
     menu.performActionForItemAtIndex(0)
     dummy.action_completed.should.equal true
+  end
+
+  it "Takes key shortcuts" do
+    menu = MenuMotion::Menu.new({
+                                  rows: [{
+                                           title: "Menu item",
+                                           tag: :main_item,
+                                           sections: [{
+                                                        rows: [{
+                                                                 title: "Section 1 Row 1",
+                                                                 tag: :section1_row1,
+                                                                 shortcut: "cmd+a"
+                                                               }, {
+                                                                 title: "Section 1 Row 2",
+                                                                 tag: :section1_row2
+                                                               }]
+                                                      }, {
+                                                        rows: [{
+                                                                 title: "Section 2 Row 1",
+                                                                 tag: :section2_row1
+                                                               }]
+                                                      }]
+                                         }]
+                                })
+
+    item = menu.item_with_tag(:section1_row1)
+    item.keyEquivalent.should.equal 'a'
+    item.keyEquivalentModifierMask.should.equal NSCommandKeyMask
+  end
+
+  it "Validates" do
+    validated = false
+
+    menu = MenuMotion::Menu.new({
+                                  rows: [{
+                                           title: "Menu item",
+                                           tag: :main_item,
+                                           sections: [{
+                                                        rows: [{
+                                                                 title: "Section 1 Row 1",
+                                                                 tag: :section1_row1,
+                                                                 validate: ->(mi) {
+                                                                   validated = true
+                                                                   false
+                                                                 }
+                                                               }, {
+                                                                 title: "Section 1 Row 2",
+                                                                 tag: :section1_row2
+                                                               }]
+                                                      }, {
+                                                        rows: [{
+                                                                 title: "Section 2 Row 1",
+                                                                 tag: :section2_row1
+                                                               }]
+                                                      }]
+                                         }]
+                                })
+
+    item = menu.item_with_tag(:section1_row1)
+    item.validate.should.equal false
+    validated.should.equal true
   end
 
 end
