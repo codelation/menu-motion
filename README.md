@@ -140,35 +140,9 @@ def action_with_sender(sender)
 end
 ```
 
-### Keyboard shortcuts
+### Menu Item Validation
 
-Assign keyboard shortcuts to menu items. Takes a string of the form '(_modifier_+)*character' where _modifier_ is any of: shift, alt, alternate, command, cmd, control, ctrl, ctl.
-
-```ruby
-menu = MenuMotion::Menu.new({
-  rows: [{
-    title: "Menu item",
-    tag: :main_item
-    rows: [{
-      title: "Submenu item 1",
-      tag: :submenu_item1,
-      target: self,
-      action: "do_something:",
-      shortcut: "cmd+1"
-    }, {
-      title: "Submenu item 2",
-      tag: :submenu_item2,
-      target: self,
-      action: "do_something:"
-      shortcut: "shift+cmd+2"
-    }]
-  }]
-})
-```
-
-### Menu Item validation
-
-MenuMotion implements the [NSMenuValidation](https://developer.apple.com/library/mac/documentation/cocoa/reference/applicationkit/Protocols/NSMenuValidation_Protocol/Reference/Reference.html) protocol. Pass a method name or a proc to a menu item:
+MenuMotion implements the [NSMenuValidation](https://developer.apple.com/library/mac/documentation/cocoa/reference/applicationkit/Protocols/NSMenuValidation_Protocol/Reference/Reference.html) protocol. Pass a proc to a menu item on `validate`:
 
 ```ruby
 menu = MenuMotion::Menu.new({
@@ -181,16 +155,16 @@ menu = MenuMotion::Menu.new({
       target: self,
       action: "do_something:",
       validate: ->(menu_item) {
-        true
+        true # or false
       }
     }]
   }]
 })
 ```
 
-### Reconfiguring Menu Items
+### Updating Menu Items
 
-Assign tags to menu items that will need to be reconfigured.
+Assign tags to menu items that will need to be updated.
 
 ```ruby
 menu = MenuMotion::Menu.new({
@@ -211,7 +185,7 @@ menu = MenuMotion::Menu.new({
   }]
 })
 
-# Let's reconfigure the first item's title:
+# Let's update the first item's title:
 menu.update_item_with_tag(:main_item, {
   title: "Hello World"
 })
@@ -230,6 +204,7 @@ menu.update_item_with_tag(:submenu_item1, {
 ## TODO
 
 - Menu Item Icons
+- Keyboard Shortcuts
 
 ## Contributing
 
