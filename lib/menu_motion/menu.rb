@@ -50,7 +50,11 @@ module MenuMotion
     end
 
     def initialize(params = {}, root_menu = nil)
-      initWithTitle(params[:title] || 'Add A Title!')
+      if params[:title]
+        initWithTitle(params[:title])
+      else
+        super()
+      end
 
       self.root_menu = root_menu
       self.build_menu_from_params(self, params)
