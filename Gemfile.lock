@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    menu_motion (0.0.1)
+    menu-motion (0.0.2)
 
 GEM
   remote: https://rubygems.org/
@@ -47,7 +47,7 @@ PLATFORMS
 DEPENDENCIES
   awesome_print_motion
   guard-motion
-  menu_motion!
+  menu-motion!
   motion-redgreen
   rake
   terminal-notifier-guard

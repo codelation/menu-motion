@@ -27,14 +27,6 @@ describe "MenuMotion::Menu" do
   end
 
   it "Can set a target and action on a row" do
-    class Dummy
-      attr_accessor :action_completed
-
-      def dummy_action
-        self.action_completed = true
-      end
-    end
-
     dummy = Dummy.new
 
     menu = MenuMotion::Menu.new({
@@ -157,20 +149,20 @@ describe "MenuMotion::Menu" do
       }]
     })
 
-    item = menu.item_with_tag(:main_item)
-    item.title.should.equal "Menu item"
+    menu_item = menu.item_with_tag(:main_item)
+    menu_item.title.should.equal "Menu item"
 
-    item = menu.item_with_tag(:section1_row1)
-    item.title.should.equal "Section 1 Row 1"
+    menu_item = menu.item_with_tag(:section1_row1)
+    menu_item.title.should.equal "Section 1 Row 1"
 
-    item = menu.item_with_tag(:section1_row2)
-    item.title.should.equal "Section 1 Row 2"
+    menu_item = menu.item_with_tag(:section1_row2)
+    menu_item.title.should.equal "Section 1 Row 2"
 
-    item = menu.item_with_tag(:section2_row1)
-    item.title.should.equal "Section 2 Row 1"
+    menu_item = menu.item_with_tag(:section2_row1)
+    menu_item.title.should.equal "Section 2 Row 1"
   end
 
-  it "Reconfigures the title of the menu item with the given tag" do
+  it "Updates the title of the menu item with the given tag" do
     menu = MenuMotion::Menu.new({
       rows: [{
         title: "Menu item",
@@ -192,22 +184,14 @@ describe "MenuMotion::Menu" do
       }]
     })
 
-    menu.reconfigure(:section1_row2, {
+    menu.update_item_with_tag(:section1_row2, {
       title: "New Title"
     })
 
     menu.itemAtIndex(0).submenu.itemAtIndex(1).title.should.equal "New Title"
   end
 
-  it "Reconfigures the target and action of the menu item with the given tag" do
-    class Dummy
-      attr_accessor :action_completed
-
-      def dummy_action
-        self.action_completed = true
-      end
-    end
-
+  it "Updates the target and action of the menu item with the given tag" do
     dummy = Dummy.new
 
     menu = MenuMotion::Menu.new({
@@ -231,7 +215,7 @@ describe "MenuMotion::Menu" do
       }]
     })
 
-    menu.reconfigure(:main_item, {
+    menu.update_item_with_tag(:main_item, {
       target: dummy,
       action: "dummy_action"
     })
@@ -240,65 +224,56 @@ describe "MenuMotion::Menu" do
     dummy.action_completed.should.equal true
   end
 
-  it "Takes key shortcuts" do
-    menu = MenuMotion::Menu.new({
-                                  rows: [{
-                                           title: "Menu item",
-                                           tag: :main_item,
-                                           sections: [{
-                                                        rows: [{
-                                                                 title: "Section 1 Row 1",
-                                                                 tag: :section1_row1,
-                                                                 shortcut: "cmd+a"
-                                                               }, {
-                                                                 title: "Section 1 Row 2",
-                                                                 tag: :section1_row2
-                                                               }]
-                                                      }, {
-                                                        rows: [{
-                                                                 title: "Section 2 Row 1",
-                                                                 tag: :section2_row1
-                                                               }]
-                                                      }]
-                                         }]
-                                })
+  it "Validates menu items" do
+    # FIXME: I want to check against MenuItem#isEnabled, but I can't figure
+    # out a way to trigger a "user action" that validates the menu items
 
-    item = menu.item_with_tag(:section1_row1)
-    item.keyEquivalent.should.equal 'a'
-    item.keyEquivalentModifierMask.should.equal NSCommandKeyMask
-  end
-
-  it "Validates" do
-    validated = false
+    dummy1 = Dummy.new
+    dummy2 = Dummy.new
 
     menu = MenuMotion::Menu.new({
-                                  rows: [{
-                                           title: "Menu item",
-                                           tag: :main_item,
-                                           sections: [{
-                                                        rows: [{
-                                                                 title: "Section 1 Row 1",
-                                                                 tag: :section1_row1,
-                                                                 validate: ->(mi) {
-                                                                   validated = true
-                                                                   false
-                                                                 }
-                                                               }, {
-                                                                 title: "Section 1 Row 2",
-                                                                 tag: :section1_row2
-                                                               }]
-                                                      }, {
-                                                        rows: [{
-                                                                 title: "Section 2 Row 1",
-                                                                 tag: :section2_row1
-                                                               }]
-                                                      }]
-                                         }]
-                                })
+      rows: [{
+        title: "Menu item",
+        tag: :main_item,
+        sections: [{
+          rows: [{
+            title: "Section 1 Row 1",
+            tag: :section1_row1,
+            target: dummy1,
+            action: "dummy_action",
+            validate: ->(menu_item) {
+              false
+            }
+          }, {
+            title: "Section 1 Row 2",
+            tag: :section1_row2,
+            target: dummy2,
+            action: "dummy_action",
+            validate: ->(menu_item) {
+              true
+            }
+          }]
+        }, {
+          rows: [{
+            title: "Section 2 Row 1",
+            tag: :section2_row1
+          }]
+        }]
+      }]
+    })
+    menu.itemAtIndex(0).submenu.performActionForItemAtIndex(0)
+    menu.itemAtIndex(0).submenu.performActionForItemAtIndex(1)
 
-    item = menu.item_with_tag(:section1_row1)
-    item.validate.should.equal false
-    validated.should.equal true
+    dummy1.action_completed.should.not.equal true
+    dummy2.action_completed.should.equal true
   end
 
+end
+
+class Dummy
+  attr_accessor :action_completed
+
+  def dummy_action
+    self.action_completed = true
+  end
 end

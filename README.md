@@ -212,13 +212,13 @@ menu = MenuMotion::Menu.new({
 })
 
 # Let's reconfigure the first item's title:
-menu.reconfigure(:main_item, {
+menu.update_item_with_tag(:main_item, {
   title: "Hello World"
 })
 
 # And give the first submenu item a submenu.
 # The target and action will not be used if a submenu is defined.
-menu.reconfigure(:submenu_item1, {
+menu.update_item_with_tag(:submenu_item1, {
   rows: [{
     title: "Click me",
     target: self,

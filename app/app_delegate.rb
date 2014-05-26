@@ -39,6 +39,7 @@ class AppDelegate
         }]
       }]
     })
+
     status_item.setMenu(menu)
   end
 
