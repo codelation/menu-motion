@@ -114,7 +114,7 @@ menu = MenuMotion::Menu.new({
 ### Actions
 
 Adding an action to a menu item is easy. Just define the
-target and action.
+target and action parameters.
 
 ```ruby
 menu = MenuMotion::Menu.new({
@@ -140,8 +140,10 @@ end
 
 ### Keyboard Shortcuts
 
-Keyboard shortcuts can be assigned to menu items with a simple string.
-The string can include multiple modifier keys, followed by the final key to be assigned (`{modifier+}{modifier+}{key}`):
+Keyboard shortcuts can be assigned to menu items with a simple string
+assigned to the `:shortcut` parameter.
+The string can include multiple modifier keys, followed by the final
+key to be assigned (`{modifier+}{modifier+}{key}`):
 
 ```ruby
 menu = MenuMotion::Menu.new({
@@ -164,7 +166,10 @@ menu = MenuMotion::Menu.new({
 
 ### Validation
 
-MenuMotion implements the [NSMenuValidation](https://developer.apple.com/library/mac/documentation/cocoa/reference/applicationkit/Protocols/NSMenuValidation_Protocol/Reference/Reference.html) protocol. Pass a proc to a menu item on `validate`:
+MenuMotion implements the [NSMenuValidation](https://developer.apple.com/library/mac/documentation/cocoa/reference/applicationkit/Protocols/NSMenuValidation_Protocol/Reference/Reference.html)
+protocol for determining whether a menu item should be enabled or not.
+Simply pass a `Proc` to the `:validate` parameter that returns `true` if the
+menu item should be enabled or `false` if the menu item should be disabled:
 
 ```ruby
 menu = MenuMotion::Menu.new({
