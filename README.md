@@ -226,7 +226,6 @@ menu.update_item_with_tag(:submenu_item1, {
 ## TODO
 
 - Menu Item Icons
-- Keyboard Shortcuts
 
 ## Contributing
 
