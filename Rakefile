@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 $:.unshift("/Library/RubyMotion/lib")
 require "motion/project/template/osx"
-require "./lib/menu_motion"
 
 begin
   require "bundler"
