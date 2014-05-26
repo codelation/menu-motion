@@ -70,12 +70,10 @@ menu = MenuMotion::Menu.new({
   }, {
     rows: [{
       title: "About MenuMotion",
-      target: self,
-      action: "about"
+      action: "orderFrontStandardAboutPanel:"
     }, {
       title: "Quit",
-      target: self,
-      action: "quit"
+      action: "terminate:"
     }]
   }]
 })
@@ -140,7 +138,7 @@ def action_with_sender(sender)
 end
 ```
 
-### Menu Item Validation
+### Validation
 
 MenuMotion implements the [NSMenuValidation](https://developer.apple.com/library/mac/documentation/cocoa/reference/applicationkit/Protocols/NSMenuValidation_Protocol/Reference/Reference.html) protocol. Pass a proc to a menu item on `validate`:
 

@@ -30,12 +30,10 @@ class AppDelegate
       }, {
         rows: [{
           title: "About MenuMotion",
-          target: self,
-          action: "about"
+          action: "orderFrontStandardAboutPanel:"
         }, {
           title: "Quit",
-          target: self,
-          action: "quit"
+          action: "terminate:"
         }]
       }]
     })
