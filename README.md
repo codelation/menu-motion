@@ -70,12 +70,10 @@ menu = MenuMotion::Menu.new({
   }, {
     rows: [{
       title: "About MenuMotion",
-      target: self,
-      action: "about"
+      action: "orderFrontStandardAboutPanel:"
     }, {
       title: "Quit",
-      target: self,
-      action: "quit"
+      action: "terminate:"
     }]
   }]
 })
@@ -140,23 +138,69 @@ def action_with_sender(sender)
 end
 ```
 
-### Updating Menu Items
+### Keyboard Shortcuts
 
-Assign keys to menu items that will need to be updated.
+Keyboard shortcuts can be assigned to menu items with a simple string.
+The string can include multiple modifier keys, followed by the final key to be assigned (`{modifier+}{modifier+}{key}`):
+
+```ruby
+menu = MenuMotion::Menu.new({
+  rows: [{
+    title: "Item 1",
+    shortcut: "command+1"
+  }, {
+    title: "Item 2",
+    shortcut: "control+shift+2"
+  }]
+})
+```
+
+#### Modifier Key Options
+
+- **`shift`**
+- **`control`**, `ctl`, `ctrl`
+- **`option`**, `opt`, `alt`, `alternate`
+- **`command`**, `cmd`
+
+### Validation
+
+MenuMotion implements the [NSMenuValidation](https://developer.apple.com/library/mac/documentation/cocoa/reference/applicationkit/Protocols/NSMenuValidation_Protocol/Reference/Reference.html) protocol. Pass a proc to a menu item on `validate`:
 
 ```ruby
 menu = MenuMotion::Menu.new({
   rows: [{
     title: "Menu item",
-    key: :main_item
+    tag: :main_item
     rows: [{
       title: "Submenu item 1",
-      key: :submenu_item1,
+      tag: :submenu_item1,
+      target: self,
+      action: "do_something:",
+      validate: ->(menu_item) {
+        true # or false
+      }
+    }]
+  }]
+})
+```
+
+### Updating Menu Items
+
+Assign tags to menu items that will need to be updated.
+
+```ruby
+menu = MenuMotion::Menu.new({
+  rows: [{
+    title: "Menu item",
+    tag: :main_item
+    rows: [{
+      title: "Submenu item 1",
+      tag: :submenu_item1,
       target: self,
       action: "do_something:"
     }, {
       title: "Submenu item 2",
-      key: :submenu_item2,
+      tag: :submenu_item2,
       target: self,
       action: "do_something:"
     }]
@@ -164,13 +208,13 @@ menu = MenuMotion::Menu.new({
 })
 
 # Let's update the first item's title:
-menu.update(:main_item, {
+menu.update_item_with_tag(:main_item, {
   title: "Hello World"
 })
 
 # And give the first submenu item a submenu.
 # The target and action will not be used if a submenu is defined.
-menu.update(:submenu_item1, {
+menu.update_item_with_tag(:submenu_item1, {
   rows: [{
     title: "Click me",
     target: self,

@@ -12,11 +12,13 @@ class AppDelegate
               rows: [{
                 title: "First Action",
                 target: self,
-                action: "first_action"
+                action: "first_action",
+                shortcut: "command+f"
               }, {
                 title: "Second Action",
                 target: self,
-                action: "action_with_sender:"
+                action: "action_with_sender:",
+                shortcut: "cmd+option+s"
               }]
             }]
           }, {
@@ -30,15 +32,14 @@ class AppDelegate
       }, {
         rows: [{
           title: "About MenuMotion",
-          target: self,
-          action: "about"
+          action: "orderFrontStandardAboutPanel:"
         }, {
           title: "Quit",
-          target: self,
-          action: "quit"
+          action: "terminate:"
         }]
       }]
     })
+
     status_item.setMenu(menu)
   end
 

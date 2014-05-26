@@ -2,34 +2,25 @@ module MenuMotion
 
   class Menu < NSMenu
 
-    attr_accessor :menu_items
-    attr_accessor :root_menu
+    attr_accessor :menu_items, :root_menu
 
     def add_rows_to_menu(menu, rows)
       rows.each do |row|
-        menu_item = NSMenuItem.alloc.initWithTitle(row[:title], action: row[:action], keyEquivalent:"")
-        menu_item.target = row[:target]
+        row[:root_menu] = WeakRef.new(self.root_menu || self)
+        menu_item = MenuMotion::MenuItem.new(row)
+        menu_item.target = self
+        menu_item.action = "perform_action:"
 
-        # Add sections and/or rows to a submenu
-        if row[:sections]
-          submenu = MenuMotion::Menu.new({
-            sections: row[:sections]
-          }, self.root_menu || self)
-          menu_item.setSubmenu(submenu)
-        elsif row[:rows]
-          submenu = MenuMotion::Menu.new({
-            rows: row[:rows]
-          }, self.root_menu || self)
-          menu_item.setSubmenu(submenu)
-        end
+        if tag = row[:tag]
+          tag = tag.to_sym
+          menu_item.tag = tag
 
-        if row[:key]
           if self.root_menu
             self.root_menu.menu_items ||= {}
-            self.root_menu.menu_items[row[:key].to_sym] = WeakRef.new(menu_item)
+            self.root_menu.menu_items[tag] = WeakRef.new(menu_item)
           else
             self.menu_items ||= {}
-            self.menu_items[row[:key].to_sym] = WeakRef.new(menu_item)
+            self.menu_items[tag] = WeakRef.new(menu_item)
           end
         end
 
@@ -59,7 +50,11 @@ module MenuMotion
     end
 
     def initialize(params = {}, root_menu = nil)
-      super()
+      if params[:title]
+        initWithTitle(params[:title])
+      else
+        super()
+      end
 
       self.root_menu = root_menu
       self.build_menu_from_params(self, params)
@@ -67,22 +62,24 @@ module MenuMotion
       self
     end
 
-    def item_with_key(key)
+    def item_with_tag(tag)
       @menu_items ||= {}
-      @menu_items[key.to_sym]
+      @menu_items[tag.to_sym]
     end
 
-    def update(key, params)
-      menu_item = self.item_with_key(key)
+    def perform_action(menu_item)
+      menu_item.perform_action
+    end
 
-      menu_item.title  = params[:title]  if params[:title]
-      menu_item.target = params[:target] if params[:target]
-      menu_item.action = params[:action] if params[:action]
+    def update_item_with_tag(tag, params)
+      menu_item = self.item_with_tag(tag)
+      menu_item.update(params)
+    end
 
-      self
+    def validateMenuItem(menu_item)
+      menu_item.valid?
     end
 
   end
 
 end
-
