@@ -33,8 +33,9 @@ module MenuMotion
         self.item_target = NSApp
       end
 
-      # Add sections and/or rows to a submenu
-      add_submenu_from_params(params)
+      # Setup submenu and keyboard shortcut
+      set_submenu_from_params(params)
+      set_keyboard_shortcut(params[:shortcut]) if params.has_key?(:shortcut)
 
       self
     end
@@ -57,7 +58,35 @@ module MenuMotion
 
   private
 
-    def add_submenu_from_params(params)
+    def set_keyboard_shortcut(shortcut)
+      if shortcut
+        keys = shortcut.gsub("-", "+").split("+")
+        key = keys.pop
+        modifier_mask = 0
+        modifier_keys = keys
+
+        modifier_keys.each do |modifier_key|
+          case modifier_key
+          when "alt", "alternate", "opt", "option"
+            modifier_mask |= NSAlternateKeyMask
+          when "cmd", "command"
+            modifier_mask |= NSCommandKeyMask
+          when "ctl", "ctrl", "control"
+            modifier_mask |= NSControlKeyMask
+          when "shift"
+            modifier_mask |= NSShiftKeyMask
+          end
+        end
+
+        self.setKeyEquivalent(key)
+        self.setKeyEquivalentModifierMask(modifier_mask)
+      else
+        self.setKeyEquivalent(nil)
+        self.setKeyEquivalentModifierMask(nil)
+      end
+    end
+
+    def set_submenu_from_params(params)
       if params[:sections]
         submenu = MenuMotion::Menu.new({
           sections: params[:sections]

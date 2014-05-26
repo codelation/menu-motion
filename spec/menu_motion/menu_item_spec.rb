@@ -15,30 +15,38 @@ describe "MenuMotion::MenuItem" do
     menu_item = MenuMotion::MenuItem.new({
       title: "Hello World",
       target: dummy,
-      action: "dummy_action"
+      action: "dummy_action",
+      shortcut: "cmd+h"
     })
 
     menu_item.title.should.equal "Hello World"
     menu_item.item_target.should.equal dummy
     menu_item.item_action.should.equal "dummy_action"
+    menu_item.keyEquivalent.should.equal "h"
+    menu_item.keyEquivalentModifierMask.should.equal NSCommandKeyMask
   end
 
   it "#update should set permitted attributes on the menu item" do
     dummy = Dummy.new
 
     menu_item = MenuMotion::MenuItem.new({
-      title: "Hello World"
+      title: "Hello World",
+      shortcut: "h"
     })
+    menu_item.keyEquivalent.should.equal "h"
 
     menu_item.update({
       title: "What's up?",
       target: dummy,
-      action: "dummy_action"
+      action: "dummy_action",
+      shortcut: "cmd-control-w"
     })
 
     menu_item.title.should.equal "What's up?"
     menu_item.item_target.should.equal dummy
     menu_item.item_action.should.equal "dummy_action"
+    menu_item.keyEquivalent.should.equal "w"
+    menu_item.keyEquivalentModifierMask.should.equal(NSCommandKeyMask | NSControlKeyMask)
   end
 
   it "#perform_action should perform the action on the given target" do

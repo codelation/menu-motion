@@ -138,6 +138,30 @@ def action_with_sender(sender)
 end
 ```
 
+### Keyboard Shortcuts
+
+Keyboard shortcuts can be assigned to menu items with a simple string.
+The string can include multiple modifier keys, followed by the final key to be assigned (`{modifier+}{modifier+}{key}`):
+
+```ruby
+menu = MenuMotion::Menu.new({
+  rows: [{
+    title: "Item 1",
+    shortcut: "command+1"
+  }, {
+    title: "Item 2",
+    shortcut: "control+shift+2"
+  }]
+})
+```
+
+#### Modifier Key Options
+
+- **`shift`**
+- **`control`**, `ctl`, `ctrl`
+- **`option`**, `opt`, `alt`, `alternate`
+- **`command`**, `cmd`
+
 ### Validation
 
 MenuMotion implements the [NSMenuValidation](https://developer.apple.com/library/mac/documentation/cocoa/reference/applicationkit/Protocols/NSMenuValidation_Protocol/Reference/Reference.html) protocol. Pass a proc to a menu item on `validate`:
