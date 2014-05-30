@@ -52,7 +52,8 @@ menu = MenuMotion::Menu.new({
           rows: [{
             title: "First Action",
             target: self,
-            action: "first_action"
+            action: "first_action:",
+            object: some_object
           }, {
             title: "Second Action",
             target: self,

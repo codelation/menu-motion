@@ -16,7 +16,8 @@ describe "MenuMotion::MenuItem" do
       title: "Hello World",
       target: dummy,
       action: "dummy_action",
-      shortcut: "cmd+h"
+      shortcut: "cmd+h",
+      object: dummy
     })
 
     menu_item.title.should.equal "Hello World"
@@ -24,6 +25,8 @@ describe "MenuMotion::MenuItem" do
     menu_item.item_action.should.equal "dummy_action"
     menu_item.keyEquivalent.should.equal "h"
     menu_item.keyEquivalentModifierMask.should.equal NSCommandKeyMask
+    menu_item.object.should.equal dummy
+    menu_item.representedObject.should.equal dummy
   end
 
   it "#update should set permitted attributes on the menu item" do
