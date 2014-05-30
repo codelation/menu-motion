@@ -5,6 +5,9 @@ module MenuMotion
     attr_accessor :item_action, :item_target,
                   :root_menu, :tag, :validate
 
+    alias_method :object,  :representedObject
+    alias_method :object=, :setRepresentedObject
+
     def initialize(params = {})
       super()
       update(params)
@@ -24,6 +27,7 @@ module MenuMotion
     def update(params)
       self.item_action = params[:action]    if params.has_key?(:action)
       self.item_target = params[:target]    if params.has_key?(:target)
+      self.object      = params[:object]    if params.has_key?(:object)
       self.root_menu   = params[:root_menu] if params.has_key?(:root_menu)
       self.title       = params[:title]     if params.has_key?(:title)
       self.validate    = params[:validate]  if params.has_key?(:validate)
