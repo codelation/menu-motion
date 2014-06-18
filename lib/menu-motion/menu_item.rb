@@ -91,19 +91,15 @@ module MenuMotion
     end
 
     def set_submenu_from_params(params)
-      if params[:sections]
-        submenu = MenuMotion::Menu.new({
-          title: self.title,
-          sections: params[:sections]
-        }, self.root_menu)
-        self.setSubmenu(submenu)
-      elsif params[:rows]
-        submenu = MenuMotion::Menu.new({
-          title: self.title,
-          rows: params[:rows]
-        }, self.root_menu)
-        self.setSubmenu(submenu)
+      if params[:rows] && params[:sections]
+        raise ArgumentError, "Both `sections` and `rows` keys defined. `sections` will be used and `rows` will be ignored."
       end
+      submenu = MenuMotion::Menu.new({
+        title: self.title,
+        rows: params[:rows],
+        sections: params[:sections]
+      }, self.root_menu)
+      self.setSubmenu(submenu)
     end
 
   end
