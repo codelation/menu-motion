@@ -16,3 +16,4 @@ nbproject
 .sass-cache
 .idea
 .dat*.*
+Gemfile.lock
