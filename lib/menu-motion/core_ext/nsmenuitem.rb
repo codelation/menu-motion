@@ -5,6 +5,10 @@ class NSMenuItem
   end
 
   def checked=(value)
+    setChecked(value)
+  end
+
+  def setChecked(value)
     self.state = (value ? NSOnState : NSOffState)
   end
 end
