@@ -31,6 +31,7 @@ module MenuMotion
       self.root_menu   = params[:root_menu] if params.has_key?(:root_menu)
       self.title       = params[:title]     if params.has_key?(:title)
       self.validate    = params[:validate]  if params.has_key?(:validate)
+      self.checked     = params[:checked]   if params.has_key?(:checked)
 
       # Set NSApp as the default target if no other target is given
       if self.item_action && self.item_target.nil?
