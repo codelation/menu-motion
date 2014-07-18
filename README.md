@@ -32,10 +32,10 @@ Here's an awesome graphic of a menu:
 ```
 |‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
 | [icon] First Item > |‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
-|---------------------| First Subitem > |‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
-| About MenuMotion    |-----------------| First Action  |
-| Quit                | Some Action     | Second Action |
-|_____________________|_________________|_______________|
+|---------------------| First Subitem > |‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
+| About MenuMotion    |-----------------| First Action    |
+| Quit                | Some Action     | ✓ Second Action |
+|_____________________|_________________|_________________|
 ```
 
 And the Ruby to generate this menu:
@@ -57,7 +57,8 @@ menu = MenuMotion::Menu.new({
           }, {
             title: "Second Action",
             target: self,
-            action: "second_action"
+            action: "second_action",
+            checked: true
           }]
         }]
       }, {
