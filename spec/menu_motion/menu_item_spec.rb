@@ -83,6 +83,24 @@ describe "MenuMotion::MenuItem" do
     dummy.sender.should.equal menu_item
   end
 
+  it "#checked should set the NSMenuItem#state" do
+    menu_item = MenuMotion::MenuItem.new
+    menu_item.state.should.equal NSOffState
+    menu_item.checked = true
+    menu_item.state.should.equal NSOnState
+    menu_item.checked = false
+    menu_item.state.should.equal NSOffState
+  end
+
+  it "#checked should get the NSMenuItem#state" do
+    menu_item = MenuMotion::MenuItem.new
+    menu_item.checked.should.equal false
+    menu_item.state = NSOnState
+    menu_item.checked.should.equal true
+    menu_item.state = NSOffState
+    menu_item.checked.should.equal false
+  end
+
 end
 
 class Dummy
