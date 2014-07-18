@@ -17,7 +17,8 @@ describe "MenuMotion::MenuItem" do
       target: dummy,
       action: "dummy_action",
       shortcut: "cmd+h",
-      object: dummy
+      object: dummy,
+      checked: true
     })
 
     menu_item.title.should.equal "Hello World"
@@ -27,6 +28,7 @@ describe "MenuMotion::MenuItem" do
     menu_item.keyEquivalentModifierMask.should.equal NSCommandKeyMask
     menu_item.object.should.equal dummy
     menu_item.representedObject.should.equal dummy
+    menu_item.state.should.equal NSOnState
   end
 
   it "#update should set permitted attributes on the menu item" do
@@ -34,7 +36,8 @@ describe "MenuMotion::MenuItem" do
 
     menu_item = MenuMotion::MenuItem.new({
       title: "Hello World",
-      shortcut: "h"
+      shortcut: "h",
+      checked: true
     })
     menu_item.keyEquivalent.should.equal "h"
 
@@ -42,7 +45,8 @@ describe "MenuMotion::MenuItem" do
       title: "What's up?",
       target: dummy,
       action: "dummy_action",
-      shortcut: "cmd-control-w"
+      shortcut: "cmd-control-w",
+      checked: false
     })
 
     menu_item.title.should.equal "What's up?"
@@ -50,6 +54,7 @@ describe "MenuMotion::MenuItem" do
     menu_item.item_action.should.equal "dummy_action"
     menu_item.keyEquivalent.should.equal "w"
     menu_item.keyEquivalentModifierMask.should.equal(NSCommandKeyMask | NSControlKeyMask)
+    menu_item.state.should.equal NSOffState
   end
 
   it "#perform_action should perform the action on the given target" do
@@ -76,6 +81,24 @@ describe "MenuMotion::MenuItem" do
 
     menu_item.perform_action
     dummy.sender.should.equal menu_item
+  end
+
+  it "#checked should set the NSMenuItem#state" do
+    menu_item = MenuMotion::MenuItem.new
+    menu_item.state.should.equal NSOffState
+    menu_item.checked = true
+    menu_item.state.should.equal NSOnState
+    menu_item.checked = false
+    menu_item.state.should.equal NSOffState
+  end
+
+  it "#checked should get the NSMenuItem#state" do
+    menu_item = MenuMotion::MenuItem.new
+    menu_item.checked.should.equal false
+    menu_item.state = NSOnState
+    menu_item.checked.should.equal true
+    menu_item.state = NSOffState
+    menu_item.checked.should.equal false
   end
 
 end

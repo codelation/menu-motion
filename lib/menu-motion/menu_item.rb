@@ -8,6 +8,14 @@ module MenuMotion
     alias_method :object,  :representedObject
     alias_method :object=, :setRepresentedObject
 
+    def checked
+      self.state == NSOnState
+    end
+
+    def checked=(value)
+      self.state = (value ? NSOnState : NSOffState)
+    end
+
     def initialize(params = {})
       super()
       update(params)
@@ -25,6 +33,7 @@ module MenuMotion
     end
 
     def update(params)
+      self.checked     = params[:checked]   if params.has_key?(:checked)
       self.item_action = params[:action]    if params.has_key?(:action)
       self.item_target = params[:target]    if params.has_key?(:target)
       self.object      = params[:object]    if params.has_key?(:object)
