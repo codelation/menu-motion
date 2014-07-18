@@ -11,6 +11,7 @@ module MenuMotion
     def checked
       self.state == NSOnState
     end
+    alias_method :checked?, :checked
 
     def checked=(value)
       self.state = (value ? NSOnState : NSOffState)

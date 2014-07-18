@@ -101,6 +101,15 @@ describe "MenuMotion::MenuItem" do
     menu_item.checked.should.equal false
   end
 
+  it "#checked? should also get the NSMenuItem#state" do
+    menu_item = MenuMotion::MenuItem.new
+    menu_item.checked?.should.equal false
+    menu_item.state = NSOnState
+    menu_item.checked?.should.equal true
+    menu_item.state = NSOffState
+    menu_item.checked?.should.equal false
+  end
+
 end
 
 class Dummy
