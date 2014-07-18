@@ -65,7 +65,7 @@ menu = MenuMotion::Menu.new({
         rows: [{
           title: "Some Action",
           target: self,
-          action: "some_action"
+          action: :some_action
         }]
       }]
     }]
@@ -116,14 +116,14 @@ menu = MenuMotion::Menu.new({
 ### Actions
 
 Adding an action to a menu item is easy. Just define the
-target and action parameters.
+target and action parameters. Actions that don't require the `sender` to be passed can be defined as a `String` or a `:symbol`.
 
 ```ruby
 menu = MenuMotion::Menu.new({
   rows: [{
     title: "Basic Action",
     target: self,
-    action: "basic_action"
+    action: :basic_action
   }, {
     title: "Pass the menu item to the action",
     target: self,

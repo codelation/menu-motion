@@ -70,6 +70,19 @@ describe "MenuMotion::MenuItem" do
     dummy.action_completed.should.equal true
   end
 
+  it "#perform_action should perform the action when sent a symbol" do
+    dummy = Dummy.new
+
+    menu_item = MenuMotion::MenuItem.new({
+      title: "Hello",
+      target: dummy,
+      action: :dummy_action
+    })
+
+    menu_item.perform_action
+    dummy.action_completed.should.equal true
+  end
+
   it "#perform_action should send the menu item to the action if it ends with `:`" do
     dummy = Dummy.new
 
