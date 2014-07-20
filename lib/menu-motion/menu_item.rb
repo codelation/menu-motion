@@ -22,10 +22,6 @@ module MenuMotion
     end
     alias_method :enabled?, :enabled
 
-    def enabled=(value)
-      self.setEnabled(value)
-    end
-
     def initialize(params = {})
       super()
       update(params)
