@@ -18,7 +18,8 @@ describe "MenuMotion::MenuItem" do
       action: "dummy_action",
       shortcut: "cmd+h",
       object: dummy,
-      checked: true
+      checked: true,
+      enabled: false
     })
 
     menu_item.title.should.equal "Hello World"
@@ -29,6 +30,7 @@ describe "MenuMotion::MenuItem" do
     menu_item.object.should.equal dummy
     menu_item.representedObject.should.equal dummy
     menu_item.state.should.equal NSOnState
+    menu_item.isEnabled.should.equal false
   end
 
   it "#update should set permitted attributes on the menu item" do
@@ -37,16 +39,20 @@ describe "MenuMotion::MenuItem" do
     menu_item = MenuMotion::MenuItem.new({
       title: "Hello World",
       shortcut: "h",
-      checked: true
+      checked: true,
+      enabled: false
     })
     menu_item.keyEquivalent.should.equal "h"
+    menu_item.state.should.equal NSOnState
+    menu_item.isEnabled.should.equal false
 
     menu_item.update({
       title: "What's up?",
       target: dummy,
       action: "dummy_action",
       shortcut: "cmd-control-w",
-      checked: false
+      checked: false,
+      enabled: true
     })
 
     menu_item.title.should.equal "What's up?"
@@ -55,6 +61,7 @@ describe "MenuMotion::MenuItem" do
     menu_item.keyEquivalent.should.equal "w"
     menu_item.keyEquivalentModifierMask.should.equal(NSCommandKeyMask | NSControlKeyMask)
     menu_item.state.should.equal NSOffState
+    menu_item.isEnabled.should.equal true
   end
 
   it "#perform_action should perform the action on the given target" do
@@ -121,6 +128,33 @@ describe "MenuMotion::MenuItem" do
     menu_item.checked?.should.equal true
     menu_item.state = NSOffState
     menu_item.checked?.should.equal false
+  end
+
+  it "#enabled should set NSMenuItem#isEnabled" do
+    menu_item = MenuMotion::MenuItem.new
+    menu_item.isEnabled.should.equal true
+    menu_item.enabled = false
+    menu_item.isEnabled.should.equal false
+    menu_item.enabled = true
+    menu_item.isEnabled.should.equal true
+  end
+
+  it "#enabled should get NSMenuItem#isEnabled" do
+    menu_item = MenuMotion::MenuItem.new
+    menu_item.enabled.should.equal true
+    menu_item.setEnabled false
+    menu_item.enabled.should.equal false
+    menu_item.setEnabled true
+    menu_item.enabled.should.equal true
+  end
+
+  it "#enabled? should get NSMenuItem#isEnabled" do
+    menu_item = MenuMotion::MenuItem.new
+    menu_item.enabled?.should.equal true
+    menu_item.setEnabled false
+    menu_item.enabled?.should.equal false
+    menu_item.setEnabled true
+    menu_item.enabled?.should.equal true
   end
 
 end
