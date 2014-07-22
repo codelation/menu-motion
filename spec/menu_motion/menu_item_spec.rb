@@ -11,6 +11,7 @@ describe "MenuMotion::MenuItem" do
 
   it "should accept a set of permitted attributes on initialization" do
     dummy = Dummy.new
+    image = NSImage.imageNamed('stopwatch')
 
     menu_item = MenuMotion::MenuItem.new({
       title: "Hello World",
@@ -18,7 +19,8 @@ describe "MenuMotion::MenuItem" do
       action: "dummy_action",
       shortcut: "cmd+h",
       object: dummy,
-      checked: true
+      checked: true,
+      image: image
     })
 
     menu_item.title.should.equal "Hello World"
@@ -29,6 +31,7 @@ describe "MenuMotion::MenuItem" do
     menu_item.object.should.equal dummy
     menu_item.representedObject.should.equal dummy
     menu_item.state.should.equal NSOnState
+    menu_item.image.should.equal image
   end
 
   it "#update should set permitted attributes on the menu item" do
@@ -121,6 +124,24 @@ describe "MenuMotion::MenuItem" do
     menu_item.checked?.should.equal true
     menu_item.state = NSOffState
     menu_item.checked?.should.equal false
+  end
+
+  it "#image should set the NSMenuItem#image with a string" do
+    menu_item = MenuMotion::MenuItem.new
+
+    menu_item.image.should.equal nil
+    menu_item.image = 'stopwatch'
+    menu_item.image.should.not.equal nil
+    menu_item.image.class.should.equal NSImage
+  end
+
+  it "#image should set the NSMenuItem#image with a NSImage" do
+    menu_item = MenuMotion::MenuItem.new
+    image = NSImage.imageNamed('stopwatch')
+
+    menu_item.image.should.equal nil
+    menu_item.image = image
+    menu_item.image.should.equal image
   end
 
 end
