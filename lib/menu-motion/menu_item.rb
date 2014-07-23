@@ -17,9 +17,9 @@ module MenuMotion
       self.state = (value ? NSOnState : NSOffState)
     end
 
-    def image=(i)
-      i = NSImage.imageNamed(i) unless i.is_a?(NSImage)
-      self.setImage(i)
+    def image=(value)
+      value = NSImage.imageNamed(value) unless value.is_a?(NSImage)
+      self.setImage(value)
     end
 
     def initialize(params = {})
