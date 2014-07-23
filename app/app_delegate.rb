@@ -31,6 +31,11 @@ class AppDelegate
         }]
       }, {
         rows: [{
+          title: "Image MenuItem",
+          image: "stopwatch"
+        }]
+      }, {
+        rows: [{
           title: "About MenuMotion",
           action: "orderFrontStandardAboutPanel:"
         }, {
