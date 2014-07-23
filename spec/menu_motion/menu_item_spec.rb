@@ -12,6 +12,7 @@ describe "MenuMotion::MenuItem" do
   it "should accept a set of permitted attributes on initialization" do
     dummy = Dummy.new
     image = NSImage.imageNamed('stopwatch')
+    view = NSView.new
 
     menu_item = MenuMotion::MenuItem.new({
       title: "Hello World",
@@ -20,7 +21,8 @@ describe "MenuMotion::MenuItem" do
       shortcut: "cmd+h",
       object: dummy,
       checked: true,
-      image: image
+      image: image,
+      view: view
     })
 
     menu_item.title.should.equal "Hello World"
@@ -32,24 +34,31 @@ describe "MenuMotion::MenuItem" do
     menu_item.representedObject.should.equal dummy
     menu_item.state.should.equal NSOnState
     menu_item.image.should.equal image
+    menu_item.view.should.equal view
   end
 
   it "#update should set permitted attributes on the menu item" do
     dummy = Dummy.new
+    view1 = NSView.new
+    view2 = NSView.new
 
     menu_item = MenuMotion::MenuItem.new({
       title: "Hello World",
       shortcut: "h",
-      checked: true
+      checked: true,
+      view: view1
     })
     menu_item.keyEquivalent.should.equal "h"
+    menu_item.state.should.equal NSOnState
+    menu_item.view.should.equal view1
 
     menu_item.update({
       title: "What's up?",
       target: dummy,
       action: "dummy_action",
       shortcut: "cmd-control-w",
-      checked: false
+      checked: false,
+      view: view2
     })
 
     menu_item.title.should.equal "What's up?"
@@ -58,6 +67,7 @@ describe "MenuMotion::MenuItem" do
     menu_item.keyEquivalent.should.equal "w"
     menu_item.keyEquivalentModifierMask.should.equal(NSCommandKeyMask | NSControlKeyMask)
     menu_item.state.should.equal NSOffState
+    menu_item.view.should.equal view2
   end
 
   it "#perform_action should perform the action on the given target" do

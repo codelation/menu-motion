@@ -121,7 +121,7 @@ module MenuMotion
   private
 
     def assign_attributes(params)
-      [:image, :checked, :object, :root_menu, :title, :validate].each do |key|
+      [:image, :view, :checked, :object, :root_menu, :title, :validate].each do |key|
         self.send("#{key}=", params[key]) if params.has_key?(key)
       end
     end
