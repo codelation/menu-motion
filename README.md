@@ -33,7 +33,7 @@ Here's an awesome graphic of a menu:
 |‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
 | [icon] First Item > |‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
 |---------------------| First Subitem > |‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
-| About MenuMotion    |-----------------| First Action    |
+| ۞ About MenuMotion |-----------------| First Action    |
 | Quit                | Some Action     | ✓ Second Action |
 |_____________________|_________________|_________________|
 ```
@@ -72,7 +72,8 @@ menu = MenuMotion::Menu.new({
   }, {
     rows: [{
       title: "About MenuMotion",
-      action: "orderFrontStandardAboutPanel:"
+      action: "orderFrontStandardAboutPanel:",
+      image: "gear"
     }, {
       title: "Quit",
       action: "terminate:"
@@ -189,6 +190,42 @@ menu = MenuMotion::Menu.new({
     }]
   }]
 })
+```
+
+### Images
+
+You can assign an image to a menu item with the `image` option. This option can be sent as a `String` or an `NSImage`.
+
+```ruby
+menu = MenuMotion::Menu.new({
+  rows: [{
+    title: "Menu item",
+    tag: :main_item,
+    image: 'main_item_image' # the file extension is optional
+    # or:
+    # image: NSImage.imageNamed('main_item_image')
+  }]
+})
+```
+
+### Custom Views
+
+Menu items can have custom views applied to them with the `view` option. In order for the view to be interactable, you need to set a `target` and `action` on the menu item _even if_ the custom view handles clicks for you.
+
+```ruby
+menu = MenuMotion::Menu.new({
+  rows: [{
+    title: "Menu item",
+    tag: :main_item,
+    view: MyNSViewSubclass.new,
+    target: self,
+    action: :blank_action
+  }]
+})
+
+def blank_action
+  # Nothing to see here, move along please.
+end
 ```
 
 ### Updating Menu Items
