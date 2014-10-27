@@ -58,7 +58,9 @@ class AppDelegate
 
   def status_item
     @status_item ||= begin
-      status_item = NSStatusBar.systemStatusBar.statusItemWithLength(NSSquareStatusItemLength).init
+      # Workaround for http://hipbyte.myjetbrains.com/youtrack/issue/RM-648
+      # -2 means NSSquareStatusItemLength
+      status_item = NSStatusBar.systemStatusBar.statusItemWithLength(-2).init
       status_item.setHighlightMode(true)
 
       status_image = NSImage.imageNamed("stopwatch.pdf")
