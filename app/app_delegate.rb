@@ -64,9 +64,11 @@ class AppDelegate
       status_item.setHighlightMode(true)
 
       status_image = NSImage.imageNamed("stopwatch.pdf")
+      status_image.setTemplate(true)
       status_item.setImage(status_image)
 
       alt_status_image = NSImage.imageNamed("stopwatch-alt.pdf")
+      alt_status_image.setTemplate(true)
       status_item.setAlternateImage(alt_status_image)
 
       status_item
