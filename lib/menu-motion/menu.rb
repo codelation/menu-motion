@@ -6,7 +6,7 @@ module MenuMotion
 
     def add_rows_to_menu(menu, rows)
       rows.each do |row|
-        row[:root_menu] = WeakRef.new(self.root_menu || self)
+        row[:root_menu] = self.root_menu || self
         menu_item = MenuMotion::MenuItem.new(row)
         menu_item.target = self
         menu_item.action = "perform_action:"
@@ -17,10 +17,10 @@ module MenuMotion
 
           if self.root_menu
             self.root_menu.menu_items ||= {}
-            self.root_menu.menu_items[tag] = WeakRef.new(menu_item)
+            self.root_menu.menu_items[tag] = menu_item
           else
             self.menu_items ||= {}
-            self.menu_items[tag] = WeakRef.new(menu_item)
+            self.menu_items[tag] = menu_item
           end
         end
 
